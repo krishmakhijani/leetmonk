@@ -12,3 +12,21 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Question {
+  id         Int      @id @default(autoincrement())
+  queId      Int      @unique
+  queTitle   String
+  queAccept  Float
+  queDiff    String
+  queLink    String
+  queComp    Company  @relation(fields: [companyId], references: [id])
+  companyId  Int
+}
+
+model Company {
+  id        Int      @id @default(autoincrement())
+  compName  String   @unique
+  compYear  String[]
+  questions Question[]
+}
