@@ -1,11 +1,9 @@
-// app/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function LandingPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-gradient-to-b from-bg-light-purple to-bg-black">
-      {/* Navigation */}
       <nav className="absolute top-0 right-0 p-4 md:p-6">
         <div className="flex gap-2 md:gap-4">
           <Link
@@ -23,11 +21,8 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Main Content */}
       <div className="relative flex flex-col items-center justify-center min-h-screen px-4">
-        {/* Container for image and text */}
         <div className="relative">
-          {/* Monk Image */}
           <div className="
             absolute
             -left-20
@@ -64,7 +59,6 @@ export default function LandingPage() {
             />
           </div>
 
-          {/* Text Content */}
           <div className="text-center">
             <h1 className="
               text-5xl
