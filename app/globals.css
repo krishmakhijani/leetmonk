@@ -5,3 +5,14 @@
 body {
   @apply bg-bg-purple antialiased;
 }
+
+::selection {
+  background-color: #43266D;
+  color: #E6DAFF;
+}
+
+/* For Firefox */
+::-moz-selection {
+  background-color: #43266D;
+  color: #E6DAFF; 
+}
