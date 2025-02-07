@@ -45,10 +45,18 @@ const config: Config = {
         floating: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-20px)' },
-        }
+        },
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
+        },
       },
       animation: {
         floating: 'floating 3s ease-in-out infinite',
+        pulse: 'pulse 3s ease-in-out infinite',
+      },
+      screens: {
+        'xs': '375px',
       },
     },
   },
