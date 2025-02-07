@@ -22,6 +22,7 @@ export async function POST(req: Request) {
         password: true,
         completed: true,
         isVerified: true,
+        provider: true,
       }
     })
 
