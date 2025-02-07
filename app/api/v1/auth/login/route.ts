@@ -21,17 +21,25 @@ export async function POST(req: Request) {
         email: true,
         password: true,
         completed: true,
+        isVerified: true,
       }
     })
 
-    if (!user) {
+    if (!user || user.provider !== 'email') {
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
       )
     }
 
-    const passwordMatch = await compare(password, user.password)
+    if (!user.isVerified) {
+      return NextResponse.json(
+        { error: 'Please verify your email before logging in' },
+        { status: 401 }
+      )
+    }
+
+    const passwordMatch = await compare(password, user.password!)
     if (!passwordMatch) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
@@ -39,7 +47,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const token = crypto.randomUUID()
+    const token = crypto.randomBytes(32).toString('hex')
 
     await prisma.user.update({
       where: { id: user.id },
@@ -65,7 +73,6 @@ export async function POST(req: Request) {
         { status: 400 }
       )
     }
-
     return NextResponse.json(
       { error: 'Login failed' },
       { status: 500 }
