@@ -28,7 +28,6 @@ const config: Config = {
             'light': '#7B50BE',
           },
         },
-        // Solid Colors
         'solid': {
           'purple': {
             'light': '#843CDD',
