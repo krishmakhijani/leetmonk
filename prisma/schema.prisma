@@ -1,3 +1,4 @@
+// prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,29 +9,34 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  password   String
-  completed  Int[]    @default([])
-  token     String?   @unique
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String?
+  token         String?   @unique
+  completed     Int[]     @default([])
+  isVerified    Boolean   @default(false)
+  verifyToken   String?   @unique
+  tokenExpiry   DateTime?
+  provider      String?
+  providerId    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@map("users")
 }
 
 model Question {
-  id              String   @id @default(cuid())
-  name            String
-  questionId      Int      @unique
-  difficulty      String
-  questionTags    String[]
-  companyTags     String[]
-  questionUrl     String
+  id               String   @id @default(cuid())
+  name             String
+  questionId       Int      @unique
+  difficulty       String
+  questionTags     String[]
+  companyTags      String[]
+  questionUrl      String
   totalSubmissions Int
   totalAccepted    Int
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@map("questions")
 }
