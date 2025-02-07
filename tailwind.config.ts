@@ -42,6 +42,15 @@ const config: Config = {
           },
         },
       },
+      keyframes: {
+        floating: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        }
+      },
+      animation: {
+        floating: 'floating 3s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
