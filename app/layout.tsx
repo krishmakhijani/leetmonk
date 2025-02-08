@@ -17,9 +17,8 @@ export const metadata: Metadata = {
   description: "Leetmonk created by Krish Makhijani",
   icons: {
     icon: [
-      { url: '/monk.png' },
-      { url: '/monk.png', sizes: '16x16', type: 'image/png' },
-      { url: '/monk.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico' },
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
       { url: '/monk.png' }
