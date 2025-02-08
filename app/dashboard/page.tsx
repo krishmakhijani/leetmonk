@@ -19,6 +19,7 @@ import { SearchDropdown } from '@/components/ui/search-dropdown'
 import { Pagination } from '@/components/ui/Pagination'
 import { PageSizeSelector } from '@/components/ui/PageSizeSelector'
 import Loading from './loading'
+import { LogOutIcon } from 'lucide-react'
 
 
 function LeetCodeIcon({ className = "", size = 20 }) {
@@ -234,7 +235,7 @@ export default function DashboardPage() {
     if (loading) {
         return (
             <div className="min-h-screen bg-bg-purple flex items-center justify-center">
-                <Loading/>
+                <Loading />
             </div>
         )
     }
@@ -247,17 +248,40 @@ export default function DashboardPage() {
         )
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        router.push('/')
+    }
+
     return (
         <div className="min-h-screen bg-bg-purple p-8">
             <div className="w-full mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-solid-purple-light">
-                        LeetMonk Dashboard
+                        LEETMONK Dashboard
                     </h1>
                     <div className="flex items-center gap-4">
-                        <span className="text-text-purple-light">
-                            Showing {filteredQuestions.length} of {questions.length} questions
-                        </span>
+                        <button
+                            onClick={handleLogout}
+                            className="
+            px-4
+            py-2
+            text-sm
+            bg-red-600
+            hover:bg-red-400
+            text-text-purple-light
+            rounded-md
+            transition-colors
+            flex
+            items-center
+            gap-2
+            h-10
+        "
+                        >
+                            <LogOutIcon className="w-5 h-5" />
+                            Logout
+                        </button>
+
                         {Object.values(filters).some(v => v !== '') && (
                             <button
                                 onClick={() => setFilters({
@@ -268,7 +292,7 @@ export default function DashboardPage() {
                                     companies: '',
                                     acceptance: ''
                                 })}
-                                className="px-3 py-1 text-sm bg-interactive-purple-medium hover:bg-interactive-purple-light text-text-purple-light rounded-md transition-colors"
+                                className="h-10 px-4 py-2 text-sm bg-interactive-purple-medium hover:bg-interactive-purple-light text-text-purple-light rounded-md transition-colors"
                             >
                                 Clear Filters
                             </button>
