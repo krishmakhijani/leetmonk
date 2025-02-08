@@ -1,3 +1,4 @@
+import { Footer } from '@/components/ui/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -127,6 +128,9 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
+      <footer className="absolute bottom-0 w-full">
+        <Footer />
+      </footer>
     </main>
   );
 }
