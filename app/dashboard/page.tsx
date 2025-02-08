@@ -248,7 +248,7 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-bg-purple p-8">
-            <div className="max-w-[1400px] mx-auto">
+            <div className="w-full mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-solid-purple-light">
                         LeetMonk Dashboard
@@ -466,7 +466,7 @@ export default function DashboardPage() {
                 </div>
 
                 {filteredQuestions.length > ITEMS_PER_PAGE && (
-                    <div className="mt-8 flex items-center justify-between">
+                    <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
                         <PageSizeSelector
                             pageSize={pageSize}
                             onPageSizeChange={handlePageSizeChange}
@@ -478,6 +478,7 @@ export default function DashboardPage() {
                         />
                     </div>
                 )}
+
             </div>
         </div>
     );
