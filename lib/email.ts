@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer'
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
-  secure: true, 
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD,
@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 })
 
 export async function sendVerificationEmail(email: string, token: string) {
-  const verificationLink = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`
+  const verificationLink = `https://leetmonk.vercel.app/verify-email?token=${token}`
 
   try {
     console.log('Sending email with config:', {

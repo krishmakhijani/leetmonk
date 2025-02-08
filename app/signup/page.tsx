@@ -5,6 +5,7 @@ import { EnvelopeClosedIcon, LockClosedIcon, EyeOpenIcon, EyeClosedIcon, InfoCir
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { ToastNotification } from '../components/ui/Toast'
+import { Footer } from '@/components/ui/Footer'
 
 export default function SignupPage() {
   const formRef = useRef<HTMLFormElement>(null)
@@ -72,143 +73,150 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-bg-purple flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-solid-purple-light mb-2">
-            Create Account
-          </h1>
-          <p className="text-text-purple-light">
-            Sign up for a new account
-          </p>
-
-          {/* Transparent Yellow Note Box */}
-          <div className="mt-4 bg-yellow-400 border border-yellow-300/50 rounded-lg p-3 flex items-center space-x-3">
-            <span className="text-yellow-600">
-              <InfoCircledIcon width={24} height={24} />
-            </span>
-            <p className="text-yellow-800 text-sm">
-              Please check the spam folder for the verification link if you dont see it in your inbox.
+    <div>
+      <div className="min-h-screen bg-bg-purple flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-solid-purple-light mb-2">
+              Create Account
+            </h1>
+            <p className="text-text-purple-light">
+              Sign up for a new account
             </p>
+
+            {/* Transparent Yellow Note Box */}
+            <div className="mt-4 bg-yellow-400 border border-yellow-300/50 rounded-lg p-3 flex items-center space-x-3">
+              <span className="text-yellow-600">
+                <InfoCircledIcon width={24} height={24} />
+              </span>
+              <p className="text-yellow-800 text-sm">
+                Please check the spam folder for the verification link if you dont see it in your inbox.
+              </p>
+            </div>
           </div>
+
+          {/* Signup Form */}
+          <Form.Root
+            ref={formRef}
+            onSubmit={handleSubmit}
+            className="space-y-6"
+            id='form1'
+          >
+            <Form.Field name="email">
+              <div className="space-y-2">
+                <Form.Label className="text-sm font-medium text-text-purple-light">
+                  Email
+                </Form.Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-purple-dark">
+                    <EnvelopeClosedIcon />
+                  </span>
+                  <Form.Control asChild>
+                    <input
+                      type="email"
+                      name="email"
+                      className="w-full bg-interactive-purple-dark border border-border-purple-dark rounded-lg px-9 py-2 text-text-purple-light placeholder:text-text-purple-dark focus:outline-none focus:border-border-purple-light"
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </Form.Control>
+                </div>
+                <Form.Message className="text-red-500 text-sm" match="valueMissing">
+                  Please enter your email
+                </Form.Message>
+                <Form.Message className="text-red-500 text-sm" match="typeMismatch">
+                  Please enter a valid email
+                </Form.Message>
+              </div>
+            </Form.Field>
+
+            <Form.Field name="password">
+              <div className="space-y-2">
+                <Form.Label className="text-sm font-medium text-text-purple-light">
+                  Password
+                </Form.Label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-purple-dark">
+                    <LockClosedIcon />
+                  </span>
+                  <Form.Control asChild>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      className="w-full bg-interactive-purple-dark border border-border-purple-dark rounded-lg px-9 py-2 text-text-purple-light placeholder:text-text-purple-dark focus:outline-none focus:border-border-purple-light pr-10"
+                      placeholder="Create a password"
+                      required
+                      minLength={6}
+                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"
+                    />
+                  </Form.Control>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-purple-dark hover:text-text-purple-light"
+                  >
+                    {showPassword ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                  </button>
+                </div>
+                <Form.Message className="text-red-500 text-sm" match="valueMissing">
+                  Please enter a password
+                </Form.Message>
+                <Form.Message className="text-red-500 text-sm" match="patternMismatch">
+                  Password must contain at least 6 characters, one uppercase, one lowercase, one number and one special character
+                </Form.Message>
+                <Form.Message className="text-red-500 text-sm" match="tooShort">
+                  Password must be at least 6 characters
+                </Form.Message>
+              </div>
+            </Form.Field>
+
+            {/* Password Requirements */}
+            <div className="text-sm text-text-purple-dark space-y-1">
+              <p>Password must contain:</p>
+              <ul className="list-disc list-inside pl-2">
+                <li>At least 6 characters</li>
+                <li>One uppercase letter</li>
+                <li>One lowercase letter</li>
+                <li>One number</li>
+                <li>One special character (@$!%*?&)</li>
+              </ul>
+            </div>
+
+            <Form.Submit asChild>
+              <button
+                className="w-full bg-solid-purple-light hover:bg-solid-purple-dark text-white rounded-lg px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loading}
+              >
+                {loading ? 'Creating account...' : 'Create Account'}
+              </button>
+            </Form.Submit>
+          </Form.Root>
+
+          {/* Sign In Link */}
+          <p className="mt-6 text-center text-text-purple-light">
+            Already have an account?{' '}
+            <Link
+              href="/login"
+              className="text-solid-purple-light hover:text-solid-purple-dark"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
 
-        {/* Signup Form */}
-        <Form.Root
-          ref={formRef}
-          onSubmit={handleSubmit}
-          className="space-y-6"
-          id='form1'
-        >
-          <Form.Field name="email">
-            <div className="space-y-2">
-              <Form.Label className="text-sm font-medium text-text-purple-light">
-                Email
-              </Form.Label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-purple-dark">
-                  <EnvelopeClosedIcon />
-                </span>
-                <Form.Control asChild>
-                  <input
-                    type="email"
-                    name="email"
-                    className="w-full bg-interactive-purple-dark border border-border-purple-dark rounded-lg px-9 py-2 text-text-purple-light placeholder:text-text-purple-dark focus:outline-none focus:border-border-purple-light"
-                    placeholder="Enter your email"
-                    required
-                  />
-                </Form.Control>
-              </div>
-              <Form.Message className="text-red-500 text-sm" match="valueMissing">
-                Please enter your email
-              </Form.Message>
-              <Form.Message className="text-red-500 text-sm" match="typeMismatch">
-                Please enter a valid email
-              </Form.Message>
-            </div>
-          </Form.Field>
-
-          <Form.Field name="password">
-            <div className="space-y-2">
-              <Form.Label className="text-sm font-medium text-text-purple-light">
-                Password
-              </Form.Label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-purple-dark">
-                  <LockClosedIcon />
-                </span>
-                <Form.Control asChild>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    className="w-full bg-interactive-purple-dark border border-border-purple-dark rounded-lg px-9 py-2 text-text-purple-light placeholder:text-text-purple-dark focus:outline-none focus:border-border-purple-light pr-10"
-                    placeholder="Create a password"
-                    required
-                    minLength={6}
-                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"
-                  />
-                </Form.Control>
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-purple-dark hover:text-text-purple-light"
-                >
-                  {showPassword ? <EyeClosedIcon /> : <EyeOpenIcon />}
-                </button>
-              </div>
-              <Form.Message className="text-red-500 text-sm" match="valueMissing">
-                Please enter a password
-              </Form.Message>
-              <Form.Message className="text-red-500 text-sm" match="patternMismatch">
-                Password must contain at least 6 characters, one uppercase, one lowercase, one number and one special character
-              </Form.Message>
-              <Form.Message className="text-red-500 text-sm" match="tooShort">
-                Password must be at least 6 characters
-              </Form.Message>
-            </div>
-          </Form.Field>
-
-          {/* Password Requirements */}
-          <div className="text-sm text-text-purple-dark space-y-1">
-            <p>Password must contain:</p>
-            <ul className="list-disc list-inside pl-2">
-              <li>At least 6 characters</li>
-              <li>One uppercase letter</li>
-              <li>One lowercase letter</li>
-              <li>One number</li>
-              <li>One special character (@$!%*?&)</li>
-            </ul>
-          </div>
-
-          <Form.Submit asChild>
-            <button
-              className="w-full bg-solid-purple-light hover:bg-solid-purple-dark text-white rounded-lg px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={loading}
-            >
-              {loading ? 'Creating account...' : 'Create Account'}
-            </button>
-          </Form.Submit>
-        </Form.Root>
-
-        {/* Sign In Link */}
-        <p className="mt-6 text-center text-text-purple-light">
-          Already have an account?{' '}
-          <Link
-            href="/login"
-            className="text-solid-purple-light hover:text-solid-purple-dark"
-          >
-            Sign in
-          </Link>
-        </p>
+        <ToastNotification
+          open={toast.open}
+          onOpenChange={(open) => setToast(prev => ({ ...prev, open }))}
+          message={toast.message}
+          type={toast.type}
+        />
       </div>
-
-      <ToastNotification
-        open={toast.open}
-        onOpenChange={(open) => setToast(prev => ({ ...prev, open }))}
-        message={toast.message}
-        type={toast.type}
-      />
+      <div>
+        <footer className="absolute bottom-0 w-full">
+          <Footer />
+        </footer>
+      </div>
     </div>
   )
 }
