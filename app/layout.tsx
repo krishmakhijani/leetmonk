@@ -20,13 +20,6 @@ export const metadata: Metadata = {
       { url: '/favicon.ico' },
       { url: '/favicon.ico', sizes: '32x32', type: 'image/png' },
     ],
-    apple: [
-      { url: '/monk.png' }
-    ],
-    other: {
-      rel: 'apple-touch-icon',
-      url: '/monk.png',
-    }
   }
 };
 
