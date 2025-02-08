@@ -101,7 +101,8 @@ const config: Config = {
       },
       animation: {
         floating: 'floating 3s ease-in-out infinite',
-        pulse: 'pulse 3s ease-in-out infinite'
+        pulse: 'pulse 3s ease-in-out infinite',
+        
       },
       screens: {
         xs: '375px'
