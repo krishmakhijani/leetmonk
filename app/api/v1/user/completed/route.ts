@@ -1,7 +1,5 @@
-
 import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
-
 
 async function verifyAuth(token: string | null) {
     if (!token) {
@@ -21,38 +19,72 @@ async function verifyAuth(token: string | null) {
 }
 
 export async function GET(req: Request) {
-    try {
-        const authHeader = req.headers.get('authorization')
-        const token = authHeader?.startsWith('Bearer ')
-            ? authHeader.substring(7)
-            : null;
+    const url = new URL(req.url);
+    const searchParams = url.searchParams;
+    const statsParam = searchParams.get('stats');
 
+    if (statsParam === 'true') {
+        try {
+            const authHeader = req.headers.get('authorization')
+            const token = authHeader?.startsWith('Bearer ')
+                ? authHeader.substring(7)
+                : null;
 
-        const user = await verifyAuth(token);
-        if (!user) {
+            const user = await verifyAuth(token);
+            if (!user) {
+                return NextResponse.json(
+                    { error: 'Unauthorized: Please login first' },
+                    { status: 401 }
+                );
+            }
+
+            const totalQuestions = await prisma.question.count();
+
+            return NextResponse.json({
+                total: totalQuestions,
+                completed: user.completed.length,
+                percentage: ((user.completed.length / totalQuestions) * 100).toFixed(1) + '%'
+            });
+
+        } catch (error) {
+            console.error('Error in GET stats /api/v1/user/completed:', error);
             return NextResponse.json(
-                { error: 'Unauthorized: Please login first' },
-                { status: 401 }
+                { error: 'Internal server error' },
+                { status: 500 }
             );
         }
+    } else {
+        try {
+            const authHeader = req.headers.get('authorization')
+            const token = authHeader?.startsWith('Bearer ')
+                ? authHeader.substring(7)
+                : null;
 
-        return NextResponse.json({
-            completed: user.completed,
-            message: 'Successfully fetched completed questions'
-        });
+            const user = await verifyAuth(token);
+            if (!user) {
+                return NextResponse.json(
+                    { error: 'Unauthorized: Please login first' },
+                    { status: 401 }
+                );
+            }
 
-    } catch (error) {
-        console.error('Error in GET /api/v1/user/completed:', error);
-        return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
-        );
+            return NextResponse.json({
+                completed: user.completed,
+                message: 'Successfully fetched completed questions'
+            });
+
+        } catch (error) {
+            console.error('Error in GET /api/v1/user/completed:', error);
+            return NextResponse.json(
+                { error: 'Internal server error' },
+                { status: 500 }
+            );
+        }
     }
 }
 
 export async function POST(req: Request) {
     try {
-
         const authHeader = req.headers.get('authorization')
         const token = authHeader?.startsWith('Bearer ')
             ? authHeader.substring(7)
@@ -66,10 +98,8 @@ export async function POST(req: Request) {
             );
         }
 
-
         const body = await req.json();
         const { questionId, solved } = body;
-
 
         if (typeof questionId !== 'number') {
             return NextResponse.json(
@@ -85,11 +115,9 @@ export async function POST(req: Request) {
             );
         }
 
-
         const updatedCompleted = solved
-            ? [...new Set([...user.completed, questionId])] 
+            ? [...new Set([...user.completed, questionId])]
             : user.completed.filter(id => id !== questionId);
-
 
         await prisma.user.update({
             where: { id: user.id },
@@ -103,38 +131,6 @@ export async function POST(req: Request) {
 
     } catch (error) {
         console.error('Error in POST /api/v1/user/completed:', error);
-        return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
-        );
-    }
-}
-
-export async function GET_stats(req: Request) {
-    try {
-        const authHeader = req.headers.get('authorization')
-        const token = authHeader?.startsWith('Bearer ')
-            ? authHeader.substring(7)
-            : null;
-
-        const user = await verifyAuth(token);
-        if (!user) {
-            return NextResponse.json(
-                { error: 'Unauthorized: Please login first' },
-                { status: 401 }
-            );
-        }
-
-        const totalQuestions = await prisma.question.count();
-
-        return NextResponse.json({
-            total: totalQuestions,
-            completed: user.completed.length,
-            percentage: ((user.completed.length / totalQuestions) * 100).toFixed(1) + '%'
-        });
-
-    } catch (error) {
-        console.error('Error in GET_stats /api/v1/user/completed:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }
