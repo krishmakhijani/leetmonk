@@ -7,7 +7,7 @@ export function Footer() {
             <span className="text-sm sm:text-base">❤️</span>
             <span className="text-xs sm:text-sm text-text-purple-light">by</span>
             <a
-              href="https://twitter.com/krishmakhijani"
+              href="https://x.com/krish_makhijani"
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold text-xs sm:text-sm text-solid-purple-light hover:underline hover:text-solid-purple-dark transition-colors"
