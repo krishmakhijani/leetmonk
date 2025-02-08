@@ -18,6 +18,7 @@ import { TagsDropdown } from '@/components/ui/TagsDropdown'
 import { SearchDropdown } from '@/components/ui/search-dropdown'
 import { Pagination } from '@/components/ui/Pagination'
 import { PageSizeSelector } from '@/components/ui/PageSizeSelector'
+import Loading from './loading'
 
 
 function LeetCodeIcon({ className = "", size = 20 }) {
@@ -233,7 +234,7 @@ export default function DashboardPage() {
     if (loading) {
         return (
             <div className="min-h-screen bg-bg-purple flex items-center justify-center">
-                <div className="text-text-purple-light">Loading questions...</div>
+                <Loading/>
             </div>
         )
     }
