@@ -4,25 +4,28 @@ import Link from 'next/link';
 export default function LandingPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-gradient-to-b from-bg-light-purple to-bg-black">
-      <nav className="absolute top-0 right-0 p-4 md:p-6">
+      {/* Navigation */}
+      <nav className="absolute top-0 right-0 p-4 md:p-6 z-50">
         <div className="flex gap-2 md:gap-4">
           <Link
             href="/login"
-            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base rounded-md bg-interactive-purple-medium hover:bg-interactive-purple-light text-text-purple-light transition-colors"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base rounded-md bg-interactive-purple-medium hover:bg-interactive-purple-light text-text-purple-light transition-colors inline-block"
           >
             Login
           </Link>
           <Link
-            href="/register"
-            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base rounded-md bg-solid-purple-light hover:bg-solid-purple-dark text-text-purple-light transition-colors"
+            href="/signup"
+            className="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base rounded-md bg-solid-purple-light hover:bg-solid-purple-dark text-text-purple-light transition-colors inline-block"
           >
             Sign Up
           </Link>
         </div>
       </nav>
 
+      {/* Main Content */}
       <div className="relative flex flex-col items-center justify-center min-h-screen px-4">
         <div className="relative">
+          {/* Monk Image */}
           <div className="
             absolute
             -left-20
@@ -48,6 +51,8 @@ export default function LandingPage() {
             lg:ml-3
             animate-floating
             opacity-40
+            transition-all
+            duration-300
           ">
             <Image
               src="/images/monk.png"
@@ -59,7 +64,9 @@ export default function LandingPage() {
             />
           </div>
 
-          <div className="text-center">
+          {/* Text Content */}
+          <div className="text-center relative z-10">
+            {/* Title */}
             <h1 className="
               text-5xl
               sm:text-6xl
@@ -76,9 +83,13 @@ export default function LandingPage() {
               bg-clip-text
               animate-pulse
               drop-shadow-[0_0_25px_rgba(132,60,221,0.3)]
+              transition-all
+              duration-300
             ">
               LEETMONK
             </h1>
+
+            {/* Subtitle */}
             <p className="
               relative
               text-2xl
@@ -91,6 +102,7 @@ export default function LandingPage() {
               sm:max-w-md
               md:max-w-lg
               lg:max-w-2xl
+              mx-auto
               bg-gradient-to-r
               from-text-purple-dark
               to-text-purple-light
@@ -107,6 +119,8 @@ export default function LandingPage() {
               after:to-transparent
               pb-2
               animate-pulse
+              transition-all
+              duration-300
             ">
               Nuke the DSA in Monk Style
             </p>
