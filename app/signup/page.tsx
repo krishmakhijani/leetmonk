@@ -1,30 +1,39 @@
-
 'use client'
 
 import * as Form from '@radix-ui/react-form'
-import { EnvelopeClosedIcon, LockClosedIcon, EyeOpenIcon, EyeClosedIcon } from '@radix-ui/react-icons'
-import { useState } from 'react'
+import { EnvelopeClosedIcon, LockClosedIcon, EyeOpenIcon, EyeClosedIcon, InfoCircledIcon } from '@radix-ui/react-icons'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { ToastNotification } from '../components/ui/Toast'
 
 export default function SignupPage() {
+  const formRef = useRef<HTMLFormElement>(null)
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [toast, setToast] = useState<{
     open: boolean,
     message: string,
     type: 'success' | 'error'
-}>({
+  }>({
     open: false,
     message: '',
     type: 'success'
-})
+  })
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setLoading(true)
 
-    const formData = new FormData(event.currentTarget)
+    // Ensure the form element exists before proceeding
+    const form = event.currentTarget as HTMLFormElement | null
+
+    if (!form) {
+      console.error('Form element not found')
+      setLoading(false)
+      return
+    }
+
+    const formData = new FormData(form)
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
@@ -46,7 +55,11 @@ export default function SignupPage() {
         message: 'Please check your email for verification link',
         type: 'success'
       })
-      event.currentTarget.reset()
+
+      // Safely reset the form
+      if (formRef.current) {
+        formRef.current.reset()
+      }
     } catch (err) {
       setToast({
         open: true,
@@ -69,10 +82,25 @@ export default function SignupPage() {
           <p className="text-text-purple-light">
             Sign up for a new account
           </p>
+
+          {/* Transparent Yellow Note Box */}
+          <div className="mt-4 bg-yellow-400 border border-yellow-300/50 rounded-lg p-3 flex items-center space-x-3">
+            <span className="text-yellow-600">
+              <InfoCircledIcon width={24} height={24} />
+            </span>
+            <p className="text-yellow-800 text-sm">
+              Please check the spam folder for the verification link if you dont see it in your inbox.
+            </p>
+          </div>
         </div>
 
         {/* Signup Form */}
-        <Form.Root onSubmit={handleSubmit} className="space-y-6">
+        <Form.Root
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          id='form1'
+        >
           <Form.Field name="email">
             <div className="space-y-2">
               <Form.Label className="text-sm font-medium text-text-purple-light">
@@ -85,6 +113,7 @@ export default function SignupPage() {
                 <Form.Control asChild>
                   <input
                     type="email"
+                    name="email"
                     className="w-full bg-interactive-purple-dark border border-border-purple-dark rounded-lg px-9 py-2 text-text-purple-light placeholder:text-text-purple-dark focus:outline-none focus:border-border-purple-light"
                     placeholder="Enter your email"
                     required
@@ -112,6 +141,7 @@ export default function SignupPage() {
                 <Form.Control asChild>
                   <input
                     type={showPassword ? "text" : "password"}
+                    name="password"
                     className="w-full bg-interactive-purple-dark border border-border-purple-dark rounded-lg px-9 py-2 text-text-purple-light placeholder:text-text-purple-dark focus:outline-none focus:border-border-purple-light pr-10"
                     placeholder="Create a password"
                     required
