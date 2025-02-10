@@ -1,4 +1,3 @@
-
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 
@@ -47,25 +46,27 @@ export function TagsDropdown({ tags, visibleCount = 2 }: TagsDropdownProps) {
     const hiddenTags = tags.slice(visibleCount)
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
             {visibleTags.map((tag) => (
                 <span
                     key={tag}
                     className={`
-            px-2.5
-            py-1
-            text-xs
-            font-medium
-            rounded-full
-            ${getRandomColor(tag)}
-            shadow-sm
-            hover:opacity-90
-            transition-all
-            duration-200
-            border
-            border-opacity-20
-            border-white
-          `}
+                        px-2.5
+                        py-1
+                        text-xs
+                        font-medium
+                        rounded-full
+                        ${getRandomColor(tag)}
+                        shadow-sm
+                        hover:opacity-90
+                        transition-all
+                        duration-200
+                        border
+                        border-opacity-20
+                        border-white
+                        truncate
+                        max-w-full
+                    `}
                 >
                     {tag}
                 </span>
@@ -75,21 +76,21 @@ export function TagsDropdown({ tags, visibleCount = 2 }: TagsDropdownProps) {
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild>
                         <button className="
-              px-2.5
-              py-1
-              text-xs
-              font-medium
-              rounded-full
-              bg-solid-purple-light
-              text-white
-              hover:bg-solid-purple-dark
-              transition-all
-              duration-200
-              flex
-              items-center
-              gap-1
-              shadow-sm
-            ">
+                            px-2.5
+                            py-1
+                            text-xs
+                            font-medium
+                            rounded-full
+                            bg-solid-purple-light
+                            text-white
+                            hover:bg-solid-purple-dark
+                            transition-all
+                            duration-200
+                            flex
+                            items-center
+                            gap-1
+                            shadow-sm
+                        ">
                             +{hiddenTags.length} <ChevronDownIcon />
                         </button>
                     </DropdownMenu.Trigger>
@@ -97,15 +98,17 @@ export function TagsDropdown({ tags, visibleCount = 2 }: TagsDropdownProps) {
                     <DropdownMenu.Portal>
                         <DropdownMenu.Content
                             className="
-                z-50
-                bg-bg-purple
-                rounded-lg
-                p-2.5
-                shadow-xl
-                border
-                border-border-purple-dark
-                min-w-[150px]
-              "
+                                z-50
+                                bg-bg-purple
+                                rounded-lg
+                                p-2.5
+                                shadow-xl
+                                border
+                                border-border-purple-dark
+                                min-w-[150px]
+                                max-w-full
+                                sm:max-w-xs
+                            "
                             sideOffset={5}
                         >
                             <div className="flex flex-col gap-2">
@@ -113,21 +116,22 @@ export function TagsDropdown({ tags, visibleCount = 2 }: TagsDropdownProps) {
                                     <span
                                         key={tag}
                                         className={`
-                      px-2.5
-                      py-1
-                      text-xs
-                      font-medium
-                      rounded-full
-                      ${getRandomColor(tag)}
-                      hover:opacity-90
-                      transition-all
-                      duration-200
-                      whitespace-nowrap
-                      shadow-sm
-                      border
-                      border-opacity-20
-                      border-white
-                    `}
+                                            px-2.5
+                                            py-1
+                                            text-xs
+                                            font-medium
+                                            rounded-full
+                                            ${getRandomColor(tag)}
+                                            hover:opacity-90
+                                            transition-all
+                                            duration-200
+                                            whitespace-nowrap
+                                            shadow-sm
+                                            border
+                                            border-opacity-20
+                                            border-white
+                                            truncate
+                                        `}
                                     >
                                         {tag}
                                     </span>
