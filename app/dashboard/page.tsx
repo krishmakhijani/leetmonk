@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -20,7 +19,6 @@ import { Pagination } from '@/components/ui/Pagination'
 import { PageSizeSelector } from '@/components/ui/PageSizeSelector'
 import Loading from './loading'
 import { LogOutIcon } from 'lucide-react'
-
 
 function LeetCodeIcon({ className = "", size = 20 }) {
     return (
@@ -71,6 +69,7 @@ function YouTubeIcon({ className = "", size = 20 }) {
         </svg>
     )
 }
+
 interface Question {
     id: string
     questionId: number
@@ -207,6 +206,7 @@ export default function DashboardPage() {
         setPageSize(newSize)
         setCurrentPage(1)
     }
+
     const filteredQuestions = questions.filter(question => {
         const matchesSolved = filters.solved === '' ||
             (filters.solved === 'solved' && solvedQuestions.includes(question.questionId)) ||
@@ -254,258 +254,243 @@ export default function DashboardPage() {
     }
 
     return (
-        <div>
-            <div className="min-h-screen bg-bg-purple p-8">
-                <div className="w-full mx-auto">
-                    <div className="flex justify-between items-center mb-8">
-                        <h1 className="text-3xl font-bold text-solid-purple-light">
-                            LEETMONK Dashboard
-                        </h1>
-                        <div className="flex items-center gap-4">
+        <div className="min-h-screen bg-bg-purple p-4 md:p-8">
+            <div className="w-full mx-auto">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:mb-8">
+                    <h1 className="text-2xl md:text-3xl font-bold text-solid-purple-light text-center md:text-left">
+                        LEETMONK Dashboard
+                    </h1>
+                    <div className="flex flex-col md:flex-row items-center gap-4 mt-4 md:mt-0">
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 text-sm bg-red-600 hover:bg-red-400 text-text-purple-light rounded-md transition-colors flex items-center gap-2 h-10 w-full md:w-auto justify-center"
+                        >
+                            <LogOutIcon className="w-5 h-5" />
+                            Logout
+                        </button>
+
+                        {Object.values(filters).some(v => v !== '') && (
                             <button
-                                onClick={handleLogout}
-                                className="
-            px-4
-            py-2
-            text-sm
-            bg-red-600
-            hover:bg-red-400
-            text-text-purple-light
-            rounded-md
-            transition-colors
-            flex
-            items-center
-            gap-2
-            h-10
-        "
+                                onClick={() => setFilters({
+                                    solved: '',
+                                    questionId: '',
+                                    name: '',
+                                    tags: '',
+                                    companies: '',
+                                    acceptance: ''
+                                })}
+                                className="h-10 px-4 py-2 text-sm bg-interactive-purple-medium hover:bg-interactive-purple-light text-text-purple-light rounded-md transition-colors w-full md:w-auto"
                             >
-                                <LogOutIcon className="w-5 h-5" />
-                                Logout
+                                Clear Filters
                             </button>
-
-                            {Object.values(filters).some(v => v !== '') && (
-                                <button
-                                    onClick={() => setFilters({
-                                        solved: '',
-                                        questionId: '',
-                                        name: '',
-                                        tags: '',
-                                        companies: '',
-                                        acceptance: ''
-                                    })}
-                                    className="h-10 px-4 py-2 text-sm bg-interactive-purple-medium hover:bg-interactive-purple-light text-text-purple-light rounded-md transition-colors"
-                                >
-                                    Clear Filters
-                                </button>
-                            )}
-                        </div>
+                        )}
                     </div>
-
-                    <div className="rounded-md border border-border-purple-dark overflow-hidden">
-                        <Table className="w-full">
-                            <TableHeader>
-                                <TableRow className="hover:bg-interactive-purple-medium">
-                                    <TableHead className="text-text-purple-light w-24 p-4">
-                                        <SearchDropdown
-                                            label="Solved"
-                                            value={filters.solved}
-                                            onChange={(value) => setFilters(prev => ({ ...prev, solved: value }))}
-                                            placeholder="Filter solved status..."
-                                            options={[
-                                                { label: 'All', value: '' },
-                                                { label: 'Solved', value: 'solved' },
-                                                { label: 'Unsolved', value: 'unsolved' }
-                                            ]}
-                                        />
-                                    </TableHead>
-                                    <TableHead className="text-text-purple-light w-28 p-4">
-                                        <SearchDropdown
-                                            label="Number"
-                                            value={filters.questionId}
-                                            onChange={(value) => setFilters(prev => ({ ...prev, questionId: value }))}
-                                            placeholder="Search by question number..."
-                                        />
-                                    </TableHead>
-
-                                    <TableHead className="text-text-purple-light p-4 min-w-[300px]">
-                                        <SearchDropdown
-                                            label="Name"
-                                            value={filters.name}
-                                            onChange={(value) => setFilters(prev => ({ ...prev, name: value }))}
-                                            placeholder="Search by question name..."
-                                        />
-                                    </TableHead>
-
-                                    <TableHead className="text-text-purple-light w-28 p-4 text-center">
-                                        <span>Question</span>
-                                    </TableHead>
-
-                                    <TableHead className="text-text-purple-light w-28 p-4 text-center">
-                                        <span>Solution</span>
-                                    </TableHead>
-
-                                    <TableHead className="text-text-purple-light p-4 min-w-[200px]">
-                                        <SearchDropdown
-                                            label="Tags"
-                                            value={filters.tags}
-                                            onChange={(value) => setFilters(prev => ({ ...prev, tags: value }))}
-                                            placeholder="Search by tags..."
-                                        />
-                                    </TableHead>
-
-                                    <TableHead className="text-text-purple-light p-4 min-w-[200px]">
-                                        <SearchDropdown
-                                            label="Companies"
-                                            value={filters.companies}
-                                            onChange={(value) => setFilters(prev => ({ ...prev, companies: value }))}
-                                            placeholder="Search by companies..."
-                                        />
-                                    </TableHead>
-
-                                    <TableHead className="text-text-purple-light w-48 p-4">
-                                        <SearchDropdown
-                                            label="Acceptance"
-                                            value={filters.acceptance}
-                                            onChange={(value) => setFilters(prev => ({ ...prev, acceptance: value }))}
-                                            placeholder="Search by acceptance rate..."
-                                        />
-                                    </TableHead>
-                                </TableRow>
-                            </TableHeader>
-
-                            <TableBody>
-                                {currentQuestions.map((question) => (
-                                    <TableRow
-                                        key={question.id}
-                                        className="hover:bg-interactive-purple-medium group"
-                                    >
-                                        <TableCell className="p-4">
-                                            <Checkbox
-                                                checked={solvedQuestions.includes(question.questionId)}
-                                                onCheckedChange={(checked) =>
-                                                    handleSolvedChange(question.questionId, checked as boolean)
-                                                }
-                                                className="border-border-purple-dark data-[state=checked]:bg-solid-purple-light data-[state=checked]:border-solid-purple-light"
-                                            />
-                                        </TableCell>
-
-                                        <TableCell className="p-4 font-medium text-text-purple-light">
-                                            {question.questionId}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 text-text-purple-light font-medium">
-                                            <div className="truncate">
-                                                {question.name}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="p-4 text-center">
-                                            <Tooltip.Provider>
-                                                <Tooltip.Root>
-                                                    <Tooltip.Trigger asChild>
-                                                        <Link
-                                                            href={question.questionUrl}
-                                                            target="_blank"
-                                                            className="inline-flex items-center justify-center"
-                                                        >
-                                                            <LeetCodeIcon
-                                                                size={20}
-                                                                className="hover:scale-110 transition-transform duration-200 group-hover:opacity-90"
-                                                            />
-                                                        </Link>
-                                                    </Tooltip.Trigger>
-                                                    <Tooltip.Portal>
-                                                        <Tooltip.Content
-                                                            className="bg-interactive-purple-dark px-3 py-1 rounded text-sm text-text-purple-light"
-                                                            sideOffset={5}
-                                                        >
-                                                            Solve on LeetCode
-                                                            <Tooltip.Arrow className="fill-interactive-purple-dark" />
-                                                        </Tooltip.Content>
-                                                    </Tooltip.Portal>
-                                                </Tooltip.Root>
-                                            </Tooltip.Provider>
-                                        </TableCell>
-
-                                        <TableCell className="p-4 text-center">
-                                            <Tooltip.Provider>
-                                                <Tooltip.Root>
-                                                    <Tooltip.Trigger asChild>
-                                                        <Link
-                                                            href={`https://www.youtube.com/results?search_query=${question.questionId}+${question.name}+leetcode+solution`}
-                                                            target="_blank"
-                                                            className="inline-flex items-center justify-center"
-                                                        >
-                                                            <YouTubeIcon
-                                                                size={20}
-                                                                className="hover:scale-110 transition-transform duration-200"
-                                                            />
-                                                        </Link>
-                                                    </Tooltip.Trigger>
-                                                    <Tooltip.Portal>
-                                                        <Tooltip.Content
-                                                            className="bg-interactive-purple-dark px-3 py-1 rounded text-sm text-text-purple-light"
-                                                            sideOffset={5}
-                                                        >
-                                                            Watch Solution
-                                                            <Tooltip.Arrow className="fill-interactive-purple-dark" />
-                                                        </Tooltip.Content>
-                                                    </Tooltip.Portal>
-                                                </Tooltip.Root>
-                                            </Tooltip.Provider>
-                                        </TableCell>
-
-                                        <TableCell className="p-4">
-                                            <TagsDropdown
-                                                tags={question.questionTags}
-                                                visibleCount={2}
-                                                type="question"
-                                            />
-                                        </TableCell>
-
-                                        <TableCell className="p-4">
-                                            <TagsDropdown
-                                                tags={question.companyTags}
-                                                visibleCount={2}
-                                                type="company"
-                                            />
-                                        </TableCell>
-
-                                        <TableCell className="p-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-full bg-interactive-purple-dark rounded-full h-2">
-                                                    <div
-                                                        className="bg-solid-purple-light h-2 rounded-full transition-all duration-300"
-                                                        style={{
-                                                            width: `${(question.totalAccepted / question.totalSubmissions) * 100}%`
-                                                        }}
-                                                    />
-                                                </div>
-                                                <span className="text-sm text-text-purple-light whitespace-nowrap">
-                                                    {getAcceptanceRate(question.totalAccepted, question.totalSubmissions)}
-                                                </span>
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-
-                    {filteredQuestions.length > ITEMS_PER_PAGE && (
-                        <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                            <PageSizeSelector
-                                pageSize={pageSize}
-                                onPageSizeChange={handlePageSizeChange}
-                            />
-                            <Pagination
-                                currentPage={currentPage}
-                                totalPages={totalPages}
-                                onPageChange={handlePageChange}
-                            />
-                        </div>
-                    )}
-
                 </div>
+
+                <div className="rounded-md border border-border-purple-dark overflow-hidden">
+                    <Table className="w-full">
+                        <TableHeader>
+                            <TableRow className="hover:bg-interactive-purple-medium">
+                                <TableHead className="text-text-purple-light w-24 p-4">
+                                    <SearchDropdown
+                                        label="Solved"
+                                        value={filters.solved}
+                                        onChange={(value) => setFilters(prev => ({ ...prev, solved: value }))}
+                                        placeholder="Filter solved status..."
+                                        options={[
+                                            { label: 'All', value: '' },
+                                            { label: 'Solved', value: 'solved' },
+                                            { label: 'Unsolved', value: 'unsolved' }
+                                        ]}
+                                    />
+                                </TableHead>
+                                <TableHead className="text-text-purple-light w-28 p-4">
+                                    <SearchDropdown
+                                        label="Number"
+                                        value={filters.questionId}
+                                        onChange={(value) => setFilters(prev => ({ ...prev, questionId: value }))}
+                                        placeholder="Search by question number..."
+                                    />
+                                </TableHead>
+
+                                <TableHead className="text-text-purple-light p-4 min-w-[300px]">
+                                    <SearchDropdown
+                                        label="Name"
+                                        value={filters.name}
+                                        onChange={(value) => setFilters(prev => ({ ...prev, name: value }))}
+                                        placeholder="Search by question name..."
+                                    />
+                                </TableHead>
+
+                                <TableHead className="text-text-purple-light w-28 p-4 text-center">
+                                    <span>Question</span>
+                                </TableHead>
+
+                                <TableHead className="text-text-purple-light w-28 p-4 text-center">
+                                    <span>Solution</span>
+                                </TableHead>
+
+                                <TableHead className="text-text-purple-light p-4 min-w-[200px]">
+                                    <SearchDropdown
+                                        label="Tags"
+                                        value={filters.tags}
+                                        onChange={(value) => setFilters(prev => ({ ...prev, tags: value }))}
+                                        placeholder="Search by tags..."
+                                    />
+                                </TableHead>
+
+                                <TableHead className="text-text-purple-light p-4 min-w-[200px]">
+                                    <SearchDropdown
+                                        label="Companies"
+                                        value={filters.companies}
+                                        onChange={(value) => setFilters(prev => ({ ...prev, companies: value }))}
+                                        placeholder="Search by companies..."
+                                    />
+                                </TableHead>
+
+                                <TableHead className="text-text-purple-light w-48 p-4">
+                                    <SearchDropdown
+                                        label="Acceptance"
+                                        value={filters.acceptance}
+                                        onChange={(value) => setFilters(prev => ({ ...prev, acceptance: value }))}
+                                        placeholder="Search by acceptance rate..."
+                                    />
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+
+                        <TableBody>
+                            {currentQuestions.map((question) => (
+                                <TableRow
+                                    key={question.id}
+                                    className="hover:bg-interactive-purple-medium group"
+                                >
+                                    <TableCell className="p-4">
+                                        <Checkbox
+                                            checked={solvedQuestions.includes(question.questionId)}
+                                            onCheckedChange={(checked) =>
+                                                handleSolvedChange(question.questionId, checked as boolean)
+                                            }
+                                            className="border-border-purple-dark data-[state=checked]:bg-solid-purple-light data-[state=checked]:border-solid-purple-light"
+                                        />
+                                    </TableCell>
+
+                                    <TableCell className="p-4 font-medium text-text-purple-light">
+                                        {question.questionId}
+                                    </TableCell>
+
+                                    <TableCell className="p-4 text-text-purple-light font-medium">
+                                        <div className="truncate">
+                                            {question.name}
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="p-4 text-center">
+                                        <Tooltip.Provider>
+                                            <Tooltip.Root>
+                                                <Tooltip.Trigger asChild>
+                                                    <Link
+                                                        href={question.questionUrl}
+                                                        target="_blank"
+                                                        className="inline-flex items-center justify-center"
+                                                    >
+                                                        <LeetCodeIcon
+                                                            size={20}
+                                                            className="hover:scale-110 transition-transform duration-200 group-hover:opacity-90"
+                                                        />
+                                                    </Link>
+                                                </Tooltip.Trigger>
+                                                <Tooltip.Portal>
+                                                    <Tooltip.Content
+                                                        className="bg-interactive-purple-dark px-3 py-1 rounded text-sm text-text-purple-light"
+                                                        sideOffset={5}
+                                                    >
+                                                        Solve on LeetCode
+                                                        <Tooltip.Arrow className="fill-interactive-purple-dark" />
+                                                    </Tooltip.Content>
+                                                </Tooltip.Portal>
+                                            </Tooltip.Root>
+                                        </Tooltip.Provider>
+                                    </TableCell>
+
+                                    <TableCell className="p-4 text-center">
+                                        <Tooltip.Provider>
+                                            <Tooltip.Root>
+                                                <Tooltip.Trigger asChild>
+                                                    <Link
+                                                        href={`https://www.youtube.com/results?search_query=${question.questionId}+${question.name}+leetcode+solution`}
+                                                        target="_blank"
+                                                        className="inline-flex items-center justify-center"
+                                                    >
+                                                        <YouTubeIcon
+                                                            size={20}
+                                                            className="hover:scale-110 transition-transform duration-200"
+                                                        />
+                                                    </Link>
+                                                </Tooltip.Trigger>
+                                                <Tooltip.Portal>
+                                                    <Tooltip.Content
+                                                        className="bg-interactive-purple-dark px-3 py-1 rounded text-sm text-text-purple-light"
+                                                        sideOffset={5}
+                                                    >
+                                                        Watch Solution
+                                                        <Tooltip.Arrow className="fill-interactive-purple-dark" />
+                                                    </Tooltip.Content>
+                                                </Tooltip.Portal>
+                                            </Tooltip.Root>
+                                        </Tooltip.Provider>
+                                    </TableCell>
+
+                                    <TableCell className="p-4">
+                                        <TagsDropdown
+                                            tags={question.questionTags}
+                                            visibleCount={2}
+                                            type="question"
+                                        />
+                                    </TableCell>
+
+                                    <TableCell className="p-4">
+                                        <TagsDropdown
+                                            tags={question.companyTags}
+                                            visibleCount={2}
+                                            type="company"
+                                        />
+                                    </TableCell>
+
+                                    <TableCell className="p-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-full bg-interactive-purple-dark rounded-full h-2">
+                                                <div
+                                                    className="bg-solid-purple-light h-2 rounded-full transition-all duration-300"
+                                                    style={{
+                                                        width: `${(question.totalAccepted / question.totalSubmissions) * 100}%`
+                                                    }}
+                                                />
+                                            </div>
+                                            <span className="text-sm text-text-purple-light whitespace-nowrap">
+                                                {getAcceptanceRate(question.totalAccepted, question.totalSubmissions)}
+                                            </span>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+
+                {filteredQuestions.length > ITEMS_PER_PAGE && (
+                    <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <PageSizeSelector
+                            pageSize={pageSize}
+                            onPageSizeChange={handlePageSizeChange}
+                        />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
+                )}
+
             </div>
         </div>
     );
