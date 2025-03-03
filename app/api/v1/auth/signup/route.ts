@@ -61,6 +61,7 @@ export async function POST(req: Request) {
       )
     }
 
+
     return NextResponse.json(
       {
         message: 'Registration successful. Please check your email to verify your account.',
